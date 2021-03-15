@@ -10,7 +10,7 @@ export const Room = ({
         <h1>{name}</h1>
         <Link to="/">Leave Room</Link>
         {
-            admin ? <button onClick={onStartGamePressed}>Start Game</button> : null
+            admin ? <button onClick={onStartGamePressed} disabled={players.length < 2}>Start Game</button> : null
         }
         {players.map((player) => <div key={player.username}>{player.username}</div>)}
     </div>

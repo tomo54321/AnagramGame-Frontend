@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { socket } from '../Modules/Connection';
 import { SetRoom as SetStaticRoom } from '../Modules/Room';
+import { RoomState } from '../Constants/RoomStates';
 
 export const Rooms = ({ history }) => {
     const [loading, setLoading] = useState(true);
@@ -35,20 +36,35 @@ export const Rooms = ({ history }) => {
     }, [onRecieveRooms, onCreateAndJoin]);
 
     const lobbies = rooms.map(room => (
-        <Link to={`/${room.id}`} key={room.id}>{room.name}<br /> {room.players.length} Players</Link>
+        <Link 
+        to={`/${room.id}`} 
+        key={room.id}
+        className="room">
+            <span className="name">{room.name}</span> 
+            <div className="status">
+                <span className="status">{room.state === RoomState.IN_LOBBY  ? "Joinable" : "In Game"}</span>
+                <span className="players">{room.players.length} Players</span>
+            </div>
+        </Link>
     ))
 
     return(
-        <div>
-            <div>
-                Username: {socket.io.opts.query.username}
+        <div className="rooms">
+            <div className="game-title">
+                <h1>Wordle</h1>
+                <b className="beta">BETA</b>
             </div>
-            <div>
-                <button type="button" onClick={() => socket.emit("create room")}>Create Room</button>
-                <button type="button" onClick={() => onRefreshRooms()}>Refresh</button>
-            </div>
-            <div>
-                { loading ? "Loading..." : lobbies}
+            <div className="list">
+                <div style={{ marginBottom: 10}}>
+                    Welcome, {socket.io.opts.query.username}!
+                </div>
+                <div className="room-controls">
+                    <button type="button" className="btn btn-primary" onClick={() => socket.emit("create room")}>Create Room</button>
+                    <button type="button" className="btn btn-secondary" onClick={() => onRefreshRooms()}>Refresh</button>
+                </div>
+                <div className="room-list">
+                    { loading ? "Loading..." : lobbies}
+                </div>
             </div>
         </div>
     )

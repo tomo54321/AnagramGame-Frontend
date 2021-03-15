@@ -16,14 +16,20 @@ export const Login = () => {
     }, [username]);
 
     return(
-        <div>
+        <div className="home">
+            <div className="game-title">
+                <h1>Wordle</h1>
+                <b className="beta">BETA</b>
+            </div>
             <form onSubmit={e => {
                 connectToServer();
                 e.preventDefault();
             }}>
-                <input type="text" onChange={e => setUsername(e.target.value)} value={username}/>
-                <input type="submit" value="Login"/>
+                <input type="text" placeholder="Username" className="form-control" onChange={e => setUsername(e.target.value)} value={username}/>
+                <input type="submit" className="btn btn-primary" value="Login"/>
             </form>
+
+            <small className="legal">&copy; Sharksfin {(new Date()).getFullYear()}</small>
         </div>
     )
 
